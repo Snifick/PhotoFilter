@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PhotoFilter</string>
+    <string name="getStoragePhoto">Использовать фото из хранилища телефона</string>
+    <string name="getcameraPhoto">Сделать фото</string>
+    <string name="completedSave">Успешно сохрано!</string>
+    <string name="shareWithFriends">Поделиться</string>
+    <string name="loading">Подождите, фильтры загружаются...</string>
+</resources>
