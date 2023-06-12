@@ -25,22 +25,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.PermissionChecker
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.photofilter.R
-import com.example.photofilter.domain.usecase.MyEvent
+import com.example.photofilter.domain.models.MyEvent
+
 import com.example.photofilter.presentation.AppViewModel
 import com.example.photofilter.presentation.MainActivity
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun homeScreen(appViewModel: AppViewModel = viewModel(), activity: MainActivity, applicationContext: Context) {
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(color = Color.White),
+        .background(color = Color.DarkGray),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -50,22 +52,10 @@ fun homeScreen(appViewModel: AppViewModel = viewModel(), activity: MainActivity,
             permissionState.value = if (isGranted) PermissionChecker.PERMISSION_GRANTED else PermissionChecker.PERMISSION_DENIED
         }
 
-        Card(modifier = Modifier.size(200.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFF39090)),
-            shape = RoundedCornerShape(16.dp), onClick = { appViewModel.runEvent(MyEvent.PickPhotoByStorage(activity))}){
-            Box(  modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp), contentAlignment = Alignment.Center){
-                Text( text = stringResource(id = R.string.getStoragePhoto),
-                    fontSize = 18.sp, color = Color.Black)
-            }
+        ModernCard(text = stringResource(id = R.string.getStoragePhoto) ,
+            onClick ={ appViewModel.runEvent(MyEvent.PickPhotoByStorage(activity))} )
 
-        }
-
-        Card(modifier = Modifier.size(200.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFF39090)),
-            shape = RoundedCornerShape(16.dp), onClick = {
-
+        ModernCard(text =stringResource(id = R.string.getcameraPhoto), onClick ={
                 if (PermissionChecker.checkSelfPermission(
                         context,
                         android.Manifest.permission.CAMERA
@@ -76,17 +66,39 @@ fun homeScreen(appViewModel: AppViewModel = viewModel(), activity: MainActivity,
                     Toast.makeText(context, "no permission", Toast.LENGTH_SHORT).show()
                     launcher.launch(android.Manifest.permission.CAMERA)
                 }
-            } ){
-            Box(  modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp), contentAlignment = Alignment.Center){
-                Text(text = stringResource(id = R.string.getcameraPhoto),
-                    fontSize = 18.sp, color = Color.Black)
-            }
+            }  )
 
-        }
+
+
+
 
 
     }
     
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ModernCard(text:String,onClick:()->Unit) {
+    Card(modifier = Modifier.size(180.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(
+                0xFFD85353
+            )
+        ),
+        shape = RoundedCornerShape(16.dp),
+        onClick = { onClick.invoke() }) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp), contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                fontSize = 18.sp, color = Color.White, textAlign = TextAlign.Center
+            )
+        }
+
+    }
+}
+

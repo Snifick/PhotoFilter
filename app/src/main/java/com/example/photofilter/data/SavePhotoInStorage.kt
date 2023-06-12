@@ -5,15 +5,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
-import com.example.photofilter.domain.repository.savePhotoRepository
-import com.example.photofilter.fileName
-import com.example.photofilter.fileUri
+import com.example.photofilter.domain.repository.SavePhotoRepository
 
-class SavePhotoInStorage : savePhotoRepository{
+
+class SavePhotoInStorage : SavePhotoRepository{
     override fun savePhoto(bitmap: Bitmap,applicationContext: Context): Uri? {
 
             val filename = "${System.currentTimeMillis()}.jpg"
-        fileName = filename
             val resolver = applicationContext.contentResolver
             val imageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             val contentValues = ContentValues().apply {

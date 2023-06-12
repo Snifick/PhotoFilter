@@ -1,14 +1,8 @@
 package com.example.photofilter.presentation.screens
 
-import android.graphics.Bitmap
 import android.util.Log
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,39 +12,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -58,9 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.photofilter.R
-import com.example.photofilter.domain.usecase.Action
-import com.example.photofilter.domain.usecase.MyEvent
-import com.example.photofilter.domain.usecase.ScreenState
+import com.example.photofilter.domain.models.Action
+import com.example.photofilter.domain.models.MyEvent
+import com.example.photofilter.domain.models.ScreenState
 import com.example.photofilter.presentation.AppViewModel
 import io.getstream.sketchbook.PaintColorPalette
 import io.getstream.sketchbook.PaintColorPaletteTheme
@@ -92,7 +77,7 @@ fun filterScreen(appViewModel: AppViewModel = viewModel()) {
             ),
 
             navigationIcon = {
-                IconButton(onClick = { appViewModel.runEvent(MyEvent.ChangeScreen(ScreenState.homeScreen)) },
+                IconButton(onClick = { appViewModel.runEvent(MyEvent.ChangeScreen(ScreenState.HomeScreen)) },
                     content = {
                         Icon(
                             painterResource(id = R.drawable.baseline_arrow_back_ios_new_48),
@@ -107,11 +92,7 @@ fun filterScreen(appViewModel: AppViewModel = viewModel()) {
                    appViewModel.filteredBitmap.value =
                        sketchbookController.getSketchbookBitmap().asAndroidBitmap()
                     }
-
-
                     appViewModel.runEvent(
-
-
                         MyEvent.ToSavePhoto(
                             appViewModel.filteredBitmap.value!!,
                             context,
@@ -119,7 +100,7 @@ fun filterScreen(appViewModel: AppViewModel = viewModel()) {
                         )
                     )
 
-                    appViewModel.runEvent(MyEvent.ChangeScreen(ScreenState.resultScreen))
+                    appViewModel.runEvent(MyEvent.ChangeScreen(ScreenState.ResultScreen))
                 },
                     content = {
                         Icon(
@@ -148,7 +129,8 @@ fun filterScreen(appViewModel: AppViewModel = viewModel()) {
                         appViewModel.filteredBitmap.value?.let {
                             Image(
                                 bitmap = it.asImageBitmap(),
-                                contentDescription = ""
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop
                             )
                         }
                     }

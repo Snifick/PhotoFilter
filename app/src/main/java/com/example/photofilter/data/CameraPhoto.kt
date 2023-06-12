@@ -6,33 +6,34 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProvider
 import com.example.photofilter.CAMERA_REQUEST_CODE
-import com.example.photofilter.domain.repository.getPhotoByCameraRepository
-import com.example.photofilter.fileUri
-import com.example.photofilter.filePath
+import com.example.photofilter.domain.repository.GetPhotoByCameraRepository
+import com.example.photofilter.presentation.AppViewModel
 import com.example.photofilter.presentation.MainActivity
 import java.io.File
 
 
-class CameraPhoto :getPhotoByCameraRepository {
+class CameraPhoto :GetPhotoByCameraRepository {
     override fun getPhotoByCamera(activity: MainActivity,context: Context) {
 
+        val appViewModel:AppViewModel  = ViewModelProvider(activity)[AppViewModel::class.java]
 
         val imagesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val imageFile = File.createTempFile(
-            "my_image",  /* prefix */
-            ".jpg",      /* suffix */
-            imagesDir    /* directory */
+            "my_image",
+            ".jpg",
+            imagesDir
         )
-        filePath = imageFile.toString()
+
 
         val imageURI = FileProvider.getUriForFile(
             context,
             "com.example.photofilter.fileprovider",
             imageFile
         )
-        fileUri = imageURI
 
+        appViewModel.lastSavedUri.value = imageURI
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageURI)

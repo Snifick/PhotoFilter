@@ -7,13 +7,14 @@ import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.photofilter.data.ImageFilter
-import com.example.photofilter.domain.usecase.Action
+import androidx.navigation.NavController
+import com.example.photofilter.domain.models.ImageFilter
+import com.example.photofilter.domain.models.Action
+import com.example.photofilter.domain.models.MyEvent
 import com.example.photofilter.domain.usecase.GetPhotoByCamera
 import com.example.photofilter.domain.usecase.GetPhotoByStorage
-import com.example.photofilter.domain.usecase.MyEvent
 import com.example.photofilter.domain.usecase.SavePhoto
-import com.example.photofilter.domain.usecase.ScreenState
+import com.example.photofilter.domain.models.ScreenState
 import com.example.photofilter.domain.usecase.SharePhotoImpl
 import com.lacolinares.jetpicexpress.presentation.ui.editimage.mapper.EditImageMapperImpl
 import jp.co.cyberagent.android.gpuimage.GPUImage
@@ -30,7 +31,7 @@ class AppViewModel:ViewModel() {
     val lastSavedUri = mutableStateOf<Uri?>(null)
     val imageBitmap: MutableState<Bitmap?> = mutableStateOf(null)
     val filteredBitmap: MutableState<Bitmap?> = mutableStateOf(null)
-    val screenState: MutableState<ScreenState> = mutableStateOf( ScreenState.homeScreen)
+    val screenState: MutableState<ScreenState> = mutableStateOf( ScreenState.HomeScreen)
     val currentAction:MutableState<Action> = mutableStateOf(Action.loading)
 
     val list = mutableStateOf<List<ImageFilter>>( listOf())
@@ -56,7 +57,7 @@ class AppViewModel:ViewModel() {
                    list.value = editImageMapper.mapToImageFilters(gpuImage)
                     currentAction.value = Action.filters
                 }
-                runEvent(MyEvent.ChangeScreen(ScreenState.filterScreen))
+                runEvent(MyEvent.ChangeScreen(ScreenState.FilterScreen))
             }
             is MyEvent.ToSavePhoto->{
                 savePhoto(event.bitmap,event.applicationContext, event.needRotate)
@@ -67,6 +68,7 @@ class AppViewModel:ViewModel() {
 
         }
     }
+
     fun savePhoto(bitmap: Bitmap, context: Context, needRotate:Boolean){
         if(needRotate){
         val matrix = Matrix()

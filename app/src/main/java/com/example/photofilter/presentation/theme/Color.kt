@@ -1,4 +1,4 @@
-package com.example.photofilter.ui.theme
+package com.example.photofilter.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

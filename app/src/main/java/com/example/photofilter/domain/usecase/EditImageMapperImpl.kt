@@ -1,6 +1,6 @@
 package com.lacolinares.jetpicexpress.presentation.ui.editimage.mapper
 
-import com.example.photofilter.data.ImageFilter
+import com.example.photofilter.domain.models.ImageFilter
 import com.example.photofilter.domain.repository.EditImageMapper
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.filter.*

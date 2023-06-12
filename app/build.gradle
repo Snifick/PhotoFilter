@@ -48,7 +48,9 @@ android {
 
 dependencies {
 
-   
+
+    // Навигация
+    implementation 'androidx.navigation:navigation-compose:2.6.0'
     //Рисунки
     implementation "io.getstream:sketchbook:1.0.4"
     //Фильтры
